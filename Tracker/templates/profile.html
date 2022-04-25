@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" action="profile">
+    {{ form.csrf_token }}
+        <fieldset class="'form-control">
+            {{ form.name.label }}
+            {{ form.name }}
+        </fieldset>
+        <fieldset class="'form-control">
+            {{ form.amount.label }}
+            {{ form.amount }}
+        </fieldset>
+
+      <fieldset>
+        {{ form.category.label }}
+        {{ form.category }}
+        <ul>
+            {% for error in form.category.errors %}
+            <li style="color:red;">{{ error }}</li>
+            {% endfor %}
+        </ul>
+        </fieldset>
+        <fieldset class="input-field">
+            {{form.date.label}}
+            {{form.date}}
+        </fieldset>    
+      <div class="col-12">
+        {{ form.submit(class='btn btn-light bg-gradient text-muted')}} 
+      </div>
+  </form>
+{% endblock content %}
+
+
+  
+
+
+  
