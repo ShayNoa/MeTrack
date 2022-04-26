@@ -2,8 +2,8 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
 from Tracker.config import bcrypt, create_app, db
-from Tracker.forms import LoginForm, RegistrationForm, ExpenseForm
-from Tracker.models import User, Category
+from Tracker.forms import ExpenseForm, LoginForm, RegistrationForm
+from Tracker.models import Category, Expense, User
 
 app = create_app()
 
@@ -62,8 +62,30 @@ def logout():
 def profile():
     form = ExpenseForm()
     form.category.query = Category.query.filter(Category.id > 1)
-    if form.validate_on_submit():
-        return '<html><h1>{}</h1></html>'.format(form.category.data)
-
+    if request.method == 'POST' and  form.validate_on_submit():
+        selected_category = Category.query.filter(
+            Category.name.like(f'%{form.category.data}%')
+            ).first()
+        expense = Expense(
+            title=form.name.data,
+            price=form.amount.data,
+            date=form.date.data,
+            user_id = current_user.id,
+            category_id=selected_category.id
+        )
+        db.session.add(expense)
+        db.session.commit()
+        return render_template('profile.html', form=form)
     return render_template('profile.html', form=form)
 
+
+@app.route('/delete_expense/<int:expense_id>')
+def delete_expense(expense_id):
+    import pdb;pdb.set_trace()
+    expense = Expense.query.get_or_404(expense_id) #get_or_404?
+    db.session.delete(expense)
+    db.session.commit()
+    return redirect(url_for('profile'))
+
+# @app.route('/edit_expense/<int:expense_id>')
+# def edit_expense(expense_id):

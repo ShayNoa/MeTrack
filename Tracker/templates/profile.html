@@ -29,6 +29,48 @@
         {{ form.submit(class='btn btn-light bg-gradient text-muted')}} 
       </div>
   </form>
+
+
+  <div class="row t20">
+    <div class="col-lg-8 col-lg-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4 class="lean-h text-black">
+            <i class="glyphicon glyphicon-th-list"></i> Existing Expenses
+          </h4>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th style="width: 8%;">#</th>
+                <th style="width: 23%;">name</th>
+                <th style="width: 23%;">price</th>
+                <th style="width: 23%;">date</th>
+                <th style="width: 23%;">category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for expense in current_user.expanses %}
+                <tr>
+                  <td>{{ expense.id }}</td><td>{{ expense.title }}</td><td>{{ expense.price }}</td>
+                  <td>{{ expense.date }}</td><td>{{ expense.category_id}}</td>
+                  <td>
+                    <a href="#" class="btn btn-default btn-xs">
+                      <i class="glyphicon glyphicon-pencil"></i> Edit
+                    </a> 
+                    <a href="{{ url_for('delete_expense', expense_id=expense.id) }}" class="btn btn-danger btn-xs">
+                      <i class="glyphicon glyphicon-trash"></i> Delete
+                    </a> 
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
 
 
