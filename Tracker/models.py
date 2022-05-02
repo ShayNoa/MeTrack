@@ -17,8 +17,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)  
     
-    expanses = db.relationship('Expense', backref='by_user', lazy=True) # lazy - effecs on loading the data. 
-    # typo!! expenses
+    expenses = db.relationship('Expense', backref='by_user', lazy=True) # lazy - effecs on loading the data. 
+
 
     def __repr__(self): 
         return f'{self.id}, {self.username}, {self.first_name}, {self.last_name}, {self.email}. {self.password}'
@@ -26,15 +26,15 @@ class User(db.Model, UserMixin):
 
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    price = db.Column(db.Float, nullable=False) 
+    name = db.Column(db.String, nullable=False)
+    cost = db.Column(db.Float, nullable=False) 
     date = db.Column(db.Date, nullable=False)
     
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
     def __repr__(self): 
-        return f'{self.id}, {self.title}, {self.price}, {self.date}'
+        return f'{self.id}, {self.name}, {self.cost}, {self.date}'
 
 
 class Category(db.Model):

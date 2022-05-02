@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="POST" action="{{ url_for('edit_expense', expense_id=expense.id) }}">
+        {{ edit_form.csrf_token }}
+        <fieldset class="'form-control" value="{{expense.title}}">
+            {{ edit_form.name.label }}
+            {{ edit_form.name }}
+        </fieldset>
+        <fieldset class="'form-control">
+            {{ edit_form.cost.label }}
+            {{ edit_form.cost }}
+        </fieldset>
+
+      <fieldset>
+        {{ edit_form.category.label }}
+        {{ edit_form.category }}
+        <ul>
+            {% for error in edit_form.category.errors %}
+            <li style="color:red;">{{ error }}</li>
+            {% endfor %}
+        </ul>
+        </fieldset>
+        <fieldset class="input-field">
+            {{edit_form.date.label}}
+            {{edit_form.date}}
+        </fieldset>    
+      <div class="col-12">
+        {{ edit_form.submit(class='btn btn-light bg-gradient text-muted')}} 
+      </div>
+  </form>
+
+  {% endblock content %}
+
+<!-- {% block script %}
+<script>
+  $(document).ready(function(){
+      $('#myModal').modal("show")
+  })
+
+</script>
+{% endblock %}  -->

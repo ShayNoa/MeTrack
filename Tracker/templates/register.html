@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class='content-section'>
+<section class="Form my-4 mx-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                    <img src="{{ url_for('static', filename='register-image.png') }}" alt="sing up image" class="img-fluid rounded-circle align-middle">
+            </div>
+            <div class="col-lg-7">
     <form method='POST' action=''>
         {{ form.hidden_tag() }}
         <fieldset class='form-group'>
-            <legend class='border-bottom mb-4 text-muted'> Join Today </legend>
+            <legend class='border-bottom mb-4 mt-4 text-muted text-center'> Join Today </legend>
             <div class='form-group'>
                 {{ form.username.label(class="form-control-label text-muted") }}
 
@@ -20,7 +26,8 @@
                     {{ form.username(class="form-control form-control-lg") }}
                 {% endif %}    
             </div>
-            <div class='form-group'>
+            <div class="row">
+            <div class='mb-3 col-md-6'>
                 {{ form.first_name.label(class="form-control-label text-muted") }}
 
                 {% if form.first_name.errors %}
@@ -34,7 +41,7 @@
                     {{ form.first_name(class="form-control form-control-lg") }}
                 {% endif %}    
             </div>
-            <div class='form-group'>
+            <div class='mb-3 col-md-6'>
                 {{ form.last_name.label(class="form-control-label text-muted") }}
 
                 {% if form.last_name.errors %}
@@ -48,6 +55,7 @@
                     {{ form.last_name(class="form-control form-control-lg") }}
                 {% endif %}    
             </div>
+        </div>
             <div class='form-group'>
                 {{ form.email.label(class="form-control-label text-muted") }}
 
@@ -62,7 +70,8 @@
                     {{ form.email(class="form-control form-control-lg") }}
                 {% endif %}    
             </div>
-            <div class='form-group'>
+            <div class="row">
+            <div class='mb-3 col-md-6'>
                 {{ form.password.label(class="form-control-label text-muted") }}
 
                 {% if form.password.errors %}
@@ -76,7 +85,7 @@
                     {{ form.password(class="form-control form-control-lg") }}
                 {% endif %}    
             </div>
-            <div class='form-group'>
+            <div class='mb-3 col-md-6'>
                 {{ form.confirm_password.label(class="form-control-label text-muted") }}
 
                 {% if form.confirm_password.errors %}
@@ -90,9 +99,10 @@
                     {{ form.confirm_password(class="form-control form-control-lg") }}
                 {% endif %}    
             </div>
+            </div>
         </fieldset>
         <div class='form-group'>
-           {{ form.submit(class='btn btn-light bg-gradient mt-1')}} 
+           {{ form.submit(class='btn btn-brown')}} 
         </div>
     </form>
     <div class='border-top pt-3'>
@@ -102,6 +112,11 @@
         </small>
     </div>
 </div>
+</div>
+</div>
+</div>
+</section>
+
 
 
 

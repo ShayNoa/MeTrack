@@ -5,6 +5,8 @@ from Tracker.config import bcrypt, create_app, db
 from Tracker.forms import ExpenseForm, LoginForm, RegistrationForm
 from Tracker.models import Category, Expense, User
 
+from sqlalchemy.sql.functions import func
+
 app = create_app()
 
 
@@ -60,32 +62,66 @@ def logout():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    category_expenses = db.session.query(
+        Category.name, func.sum(Expense.cost)).join(User, Category
+        ).filter(User.id == current_user.id).group_by(Expense.category_id).all()
+    categories = [i[0] for i in category_expenses]
+    sums = [i[1] for i in category_expenses]
     form = ExpenseForm()
-    form.category.query = Category.query.filter(Category.id > 1)
+    form.category.query = Category.query.filter(Category.id > 0)
+    
     if request.method == 'POST' and  form.validate_on_submit():
         selected_category = Category.query.filter(
             Category.name.like(f'%{form.category.data}%')
             ).first()
         expense = Expense(
-            title=form.name.data,
-            price=form.amount.data,
+            name=form.name.data,
+            cost=form.cost.data,
             date=form.date.data,
             user_id = current_user.id,
             category_id=selected_category.id
         )
         db.session.add(expense)
         db.session.commit()
-        return render_template('profile.html', form=form)
-    return render_template('profile.html', form=form)
+        return render_template('profile.html', form=form, category_expenses=category_expenses)
+
+    return render_template('profile.html', form=form, category_expenses=category_expenses, categories=categories, sums=sums)
 
 
 @app.route('/delete_expense/<int:expense_id>')
 def delete_expense(expense_id):
-    import pdb;pdb.set_trace()
-    expense = Expense.query.get_or_404(expense_id) #get_or_404?
+    expense = Expense.query.get_or_404(expense_id) 
     db.session.delete(expense)
     db.session.commit()
     return redirect(url_for('profile'))
 
-# @app.route('/edit_expense/<int:expense_id>')
-# def edit_expense(expense_id):
+
+@app.route('/edit_expense/<int:expense_id>', methods=['GET', 'POST'])
+@login_required
+def edit_expense(expense_id): 
+    expense = Expense.query.get(expense_id)
+    form = ExpenseForm() 
+    if request.method == 'POST' and form.validate_on_submit:
+        selected_category = Category.query.filter(
+            Category.name.like(f'%{form.category.data}%')
+            ).first()
+        expense.name = form.name.data
+        expense.cost = form.cost.data
+        expense.category_id = selected_category.id
+        expense.date = form.date.data
+        db.session.commit()
+        flash(f'{form.name.data} changes saved', 'success')
+        return redirect(url_for('profile'))
+    
+    if request.method == 'GET':
+        edit_form = ExpenseForm(obj=expense)
+        category = Category.query.get(expense.category_id)
+        edit_form.category.data = category    
+        return render_template('edit.html', expense=expense, edit_form=edit_form)
+
+
+# Expense.query.join(User).filter(User.id == current_user.id).all()
+# db.session.query(func.sum(Expense.cost)).join(User).filter(User.id == current_user.id).group_by(Expense.category_id)
+# db.session.query(Category.name, func.sum(Expense.cost)).join(User, Category).filter(User.id == current_user.id).group_by(Expense.category_id).all() - sum of user expenses
+# group by the category name. how to chart js now? i have a list of tuples in the format (category_name, total_amount). like this - [('Groceries', 52.0), ('Housing', 1000.0)].
+# do i need to make it a json? json.dumps(dict(....))

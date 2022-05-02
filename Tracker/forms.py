@@ -39,7 +39,7 @@ def category_query():
 
 class ExpenseForm(FlaskForm):
     name = StringField('Description', validators=[DataRequired()])
-    amount = FloatField('Price', validators=[DataRequired()])
+    cost = FloatField('Cost', validators=[DataRequired()])
     category = QuerySelectField(query_factory=category_query, allow_blank=True, blank_text='Select a category', get_label='name')
     date = DateField('Date', validators=[DataRequired()])
-    submit = SubmitField('Add')
+    submit = SubmitField('Save')
