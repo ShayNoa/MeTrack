@@ -1,0 +1,118 @@
+{% if  category_expenses %}
+      <!--CHART--> 
+<div class='row mt-5'>
+<div class="col text-center">
+    <button id='CategoryBtn' class="btn btn-primary btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleCategories()">Expenses by Category</button>
+</div>
+<div class="col text-center">
+    <button id='MonthsBtn' class="btn btn-primary btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleGraphChart()">Expenses by Months</button>
+</div>
+</div>
+      
+  <div class="container justing-content-center mt-5">
+   
+    <div class="row">
+    
+        <div class="col">
+            <div class="chart-container" id="pie-chart" style="position: relative; height:40vh; width:40vw; visibility:hidden;">
+                <canvas id="myChart"></canvas>
+            </div>
+        
+                <script>
+                    function toggleCategories() {
+                        var x = document.getElementById("pie-chart");
+                        if (x.style.visibility === "hidden") {
+                            x.style.visibility = "visible";
+                        } else {
+                            x.style.visibility = "hidden";
+                        }
+                    }
+                    
+
+                    function getRandomColor() { //generates random colours and puts them in string
+                    var colors = [];
+                    for (var i = 0; i < 3; i++) {
+                        var letters = '0123456789ABCDEF'.split('');
+                        var color = '#';
+                        for (var x = 0; x < 6; x++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                        }
+                        colors.push(color);
+                    }
+                    return colors;
+                    }
+            
+                    var cat = {{ cat |safe }}; 
+                    var sums =  {{ sums|safe }}; 
+                    var ctx = document.getElementById('myChart');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: cat,
+                            datasets: [{
+                                label: '',
+                                data: sums,
+                                borderWidth: 1,
+                                backgroundColor:getRandomColor(),    
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                    
+                </script>
+            </div class='col-6'>
+            <div class="chart-container" id="graph-chart" style="position: relative; height:40vh; width:40vw; visibility:hidden;">
+                <canvas id="myChart2"></canvas>
+            </div>
+        
+                <script>
+                    function toggleGraphChart() {
+                        var x = document.getElementById("graph-chart");
+                        if (x.style.visibility === "hidden") {
+                            x.style.visibility = "visible";
+                        } else {
+                            x.style.visibility = "hidden";
+                        }
+                    }
+
+                    var months = {{ months|safe }}; 
+                    var amounts =  {{ amounts|safe }}; 
+                    var ctx = document.getElementById('myChart2');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: months,
+                            datasets: [{
+                                label: '',
+                                data: amounts,
+                                borderWidth: 1,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)',
+                                    'rgba(255, 205, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                ],
+                                
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                    
+                </script>
+        </div>
+    </div>
+</div> 
+{% endif %} 

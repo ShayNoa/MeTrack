@@ -3,8 +3,8 @@
 {% block content %}
 <!-- Add Expense Form -->
 <section class="container mb-5">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
       <div class="expense-form" style="background-color:rgb(231, 216, 201)">
         <form action="profile" method="POST" class="mt-5 p-4 rounded shadow">
           <h4 class="text-dark text-center">Add Expense</h4>
@@ -43,105 +43,15 @@
     </div>
   </div>  
 </section>
-  
-<!-- Expenses Table -->
-
-{% if current_user.expenses %}
-<section class="container">
-  <div class="row mt-6">
-  <h4 class="text-secondary text-center">Existing Expenses</h4>
-    <div class="table-responsice">
-      <table class="table"> 
-        <thead>
-          <tr>
-            <th style="width: 8%;">#</th>
-            <th style="width: 23%;">name</th>
-            <th style="width: 23%;">price</th>
-            <th style="width: 23%;">date</th>
-            <th style="width: 23%;">category</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for expense in current_user.expenses %}
-            <tr>
-              <td>{{ loop.index }}</td>
-              <td>{{ expense.name }}</td>
-              <td>{{ expense.cost }}</td>
-              <td>{{ expense.date }}</td>
-              <td>{{ expense.category_id}}</td>
-              <td>
-                <div class="d-flex flex-row mb-3">
-                  <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" class="btn btn-brown btn-xs ">
-                    <i class="bi bi-pencil-square"></i> 
-                  </a> 
-                  <a href="{{ url_for('delete_expense', expense_id=expense.id) }}" class="btn btn-brown btn-xs ms-2">
-                    <i class="bi bi-trash3"></i>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-{% endif %}
 
 
-{% if  category_expenses %}
-      <!--CHART--> 
-  <div class="container justing-content-center mt-5">
-    <div class="row">
-      <div class="chart-container" style="position: relative; height:40vh; width:40vw">
-        <canvas id="myChart"></canvas>
-      </div>
-        
-      <script>
-        function getRandomColor() { //generates random colours and puts them in string
-          var colors = [];
-          for (var i = 0; i < 3; i++) {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var x = 0; x < 6; x++) {
-              color += letters[Math.floor(Math.random() * 16)];
-            }
-            colors.push(color);
-          }
-          return colors;
-        }
-    
-      var labels = {{ categories|safe }}; 
-      var data =  {{ sums|safe }}; 
-      var ctx = document.getElementById('myChart');
-      var myChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-              labels: labels,
-              datasets: [{
-                  label: '',
-                  data: data,
-                  borderWidth: 1,
-                  backgroundColor: getRandomColor()
-                  
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      });
-        
-      </script>
-    </div>
-  </div>
-{% endif %} 
+{% include 'table.html' %}
+
+{% include 'graphs.html' %}
 
 {% endblock content %}
+
+
 
 
 

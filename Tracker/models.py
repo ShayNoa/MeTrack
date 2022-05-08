@@ -1,8 +1,9 @@
-from datetime import datetime
-
 from flask_login import UserMixin
+from sqlalchemy.sql.functions import func
+
 
 from Tracker.config import db, login_manager
+
 
 @login_manager.user_loader # read about it again.
 def load_user(user_id):
@@ -19,9 +20,14 @@ class User(db.Model, UserMixin):
     
     expenses = db.relationship('Expense', backref='by_user', lazy=True) # lazy - effecs on loading the data. 
 
-
     def __repr__(self): 
-        return f'{self.id}, {self.username}, {self.first_name}, {self.last_name}, {self.email}. {self.password}'
+        return f'{self.id}, {self.username}, {self.first_name}, {self.last_name}, {self.email}, {self.password}'
+    
+    @classmethod
+    def get_expenses(cls, current_user_id):
+        return db.session.query(Expense, Category.name).join(
+            cls, Category).filter(cls.id == current_user_id).order_by(
+                Expense.date.desc()).all()
     
 
 class Expense(db.Model):
@@ -36,6 +42,19 @@ class Expense(db.Model):
     def __repr__(self): 
         return f'{self.id}, {self.name}, {self.cost}, {self.date}'
 
+    @classmethod
+    def by_categories(cls, user_id):
+        return db.session.query(Category.name, func.sum(cls.cost)).join(
+                User, Category).filter(User.id == user_id).group_by(cls.category_id).all() 
+    
+    @classmethod
+    def by_months(cls, user_id):
+        return db.session.query(
+            func.strftime('%Y-%m', cls.date), func.sum(cls.cost)).join(User).filter(
+                User.id == user_id).group_by(func.strftime('%Y-%m', cls.date)).limit(6).all()
+    
+
+            
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
@@ -45,6 +64,12 @@ class Category(db.Model):
 
     def __repr__(self): 
         return f'{self.name}'
+
+    @classmethod
+    def get_id_by_name(cls, input_name):
+        category = cls.query.filter_by(name = str(input_name)).first()
+        return category.id
+        
 
 
 def add_categories():

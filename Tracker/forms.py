@@ -9,8 +9,8 @@ from Tracker.models import Category, User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=25)])
-    first_name = StringField('First name', validators=[Length(min=2, max=30)])
-    last_name = StringField('Last name', validators=[Length(min=2, max=30)])
+    first_name = StringField('First name', validators=[Length(min=2, max=30)]) # make it optional
+    last_name = StringField('Last name', validators=[Length(min=2, max=30)]) # make it optional
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=30)])
     confirm_password = PasswordField('Confirm password', validators=[DataRequired(), equal_to('password')])
