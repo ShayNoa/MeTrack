@@ -4,17 +4,17 @@
 {% if user_expenses %}
 <section class="container">
   <div class="row mt-6">
-  <h4 class="text-secondary text-center">Existing Expenses</h4>
+  <h3 class="text-center fw-bold">{{current_user.username}}'s Expenses</h3>
     <div class="table-responsive">
-      <table class="table" id="tabledata"> 
+      <table class="table table-responsive table-hover align-middle" id="expenses-table"> 
         <thead>
           <tr>
             <th style="width: 8%;">#</th>
-            <th style="width: 23%;">name</th>
-            <th style="width: 23%;">price</th>
-            <th style="width: 23%;">date</th>
-            <th style="width: 23%;">category</th>
-            <th style="width: 23%;">actions</th>
+            <th style="width: 23%;">Name</th>
+            <th style="width: 23%;">Price</th>
+            <th style="width: 23%;">Date</th>
+            <th style="width: 23%;">Category</th>
+            <th style="width: 23%;">Actions</th>
           </tr>
         </thead>
 

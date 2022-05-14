@@ -1,41 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="POST" action="{{ url_for('edit_expense', expense_id=expense.id) }}">
-        {{ edit_form.csrf_token }}
-        <fieldset class="'form-control" value="{{expense.title}}">
-            {{ edit_form.name.label }}
-            {{ edit_form.name }}
-        </fieldset>
-        <fieldset class="'form-control">
-            {{ edit_form.cost.label }}
-            {{ edit_form.cost }}
-        </fieldset>
+<!-- Add Expense Form -->
+<section class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="expense-form" style="background-color:rgb(231, 216, 201)">
+        <form action="{{ url_for('edit_expense', expense_id=expense.id) }}" method="POST" class="mt-5 p-4 rounded shadow">
+          <h4 class="text-dark text-center">Add Expense</h4>
+            {{ edit_form.csrf_token }}
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              {{ edit_form.name.label }}
+              {{ edit_form.name(class="form-control form-control-sm mb-2") }}
+            </div>
+            <div class="mb-3 col-md-6">
+              {{ edit_form.cost.label }}
+              {{ edit_form.cost(class="form-control form-control-sm mb-2") }}
+            </div>
 
-      <fieldset>
-        {{ edit_form.category.label }}
-        {{ edit_form.category }}
-        <ul>
-            {% for error in edit_form.category.errors %}
-            <li style="color:red;">{{ error }}</li>
-            {% endfor %}
-        </ul>
-        </fieldset>
-        <fieldset class="input-field">
-            {{edit_form.date.label}}
-            {{edit_form.date}}
-        </fieldset>    
-      <div class="col-12">
-        {{ edit_form.submit(class='btn btn-light bg-gradient text-muted')}} 
+            <div class="mb-3 col-md-6">
+              {{ edit_form.category.label }}
+              {{ edit_form.category(class="form-control form-control-sm mb-2") }}
+              <ul>
+                {% for error in edit_form.category.errors %}
+                  <li style="color:red;">{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="mb-3 col-md-6">
+              {{edit_form.date.label}}
+              {{edit_form.date(class="form-control form-control-sm mb-2")}}
+            </div> 
+
+            <div class="col-12 text-center">
+              {{ edit_form.submit(class='btn btn-brown')}} 
+            </div>
+          </div>
+        </form>
       </div>
-  </form>
-
-  {% endblock content %}
-
-<!-- {% block script %}
-<script>
-  $(document).ready(function(){
-      $('#myModal').modal("show")
-  })
-
-</script>
-{% endblock %}  -->
+    </div>
+  </div>  
+</section>
+{% endblock content %}

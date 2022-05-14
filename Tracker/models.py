@@ -24,6 +24,10 @@ class User(db.Model, UserMixin):
         return f'{self.id}, {self.username}, {self.first_name}, {self.last_name}, {self.email}, {self.password}'
     
     @classmethod
+    def by_email(cls, user_email):
+        return cls.query.filter_by(email=user_email).first()
+
+    @classmethod
     def get_expenses(cls, current_user_id):
         return db.session.query(Expense, Category.name).join(
             cls, Category).filter(cls.id == current_user_id).order_by(

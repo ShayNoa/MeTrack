@@ -1,14 +1,17 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from sqlalchemy.sql.functions import func
+from werkzeug.exceptions import NotFound
 
 from Tracker.config import bcrypt, create_app, db
 from Tracker.forms import ExpenseForm, LoginForm, RegistrationForm
 from Tracker.models import Category, Expense, User
-from datetime import date
-
 
 app = create_app()
+
+@app.errorhandler(NotFound)
+def handle_bad_request(e):
+    return 'not good!', 400
+
 
 @app.route('/')
 def home():
@@ -22,6 +25,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+    
         user = User(username=form.username.data,
                     first_name=form.first_name.data,
                     last_name=form.last_name.data,
@@ -40,17 +44,17 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.by_email(form.email.data)
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_route = request.args.get('next')
             if next_route:
                 return redirect(next_route)
             else:
-                return redirect(url_for('home'))
+                return redirect(url_for('profile'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    return render_template('login.html', form=form)
 
 
 @app.route('/logout')
@@ -62,10 +66,9 @@ def logout():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    #import pdb;pdb.set_trace()
     user_expenses = User.get_expenses(current_user.id)
     category_expenses = Expense.by_categories(current_user.id)
-    cat = [i[0] for i in category_expenses]
+    categories = [i[0] for i in category_expenses]
     sums = [i[1] for i in category_expenses]
     
     expenses_months =  Expense.by_months(current_user.id)
@@ -73,9 +76,7 @@ def profile():
     amounts = [i[1] for i in expenses_months]
     
     form = ExpenseForm()
-    form.category.query = Category.query.filter(Category.id > 0)
-    
-    if request.method == 'POST' and  form.validate_on_submit():
+    if request.method == 'POST' and form.validate_on_submit():
         category_id = Category.get_id_by_name(form.category.data)
         expense = Expense(
             name=form.name.data,
@@ -86,8 +87,9 @@ def profile():
         )
         db.session.add(expense)
         db.session.commit()
+        flash(f'{form.name.data} added', 'success')
         return redirect(url_for('profile'))
-    return render_template('profile.html', form=form, category_expenses=category_expenses, cat=cat, sums=sums, months=months, amounts=amounts, user_expenses=user_expenses)
+    return render_template('profile.html', form=form, category_expenses=category_expenses, categories=categories, sums=sums, months=months, amounts=amounts, user_expenses=user_expenses)
 
 
 @app.route('/delete_expense/<int:expense_id>')

@@ -1,77 +1,73 @@
 {% extends 'base.html' %}
 
-   <!-- <div class="col-lg-1">
-                    <img src="{{ url_for('static', filename='money.jpg') }}" alt="sing up image">
-                </div>   -->
 {% block content %}
-<section class="Form my-4 mx-5">
+<section class="Form my-2 mx-5">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center"> 
             <div class="col-lg-5">
-                    <img src="{{ url_for('static', filename='login-image.png') }}" alt="sing up image" class="img-fluid rounded-circle mt-2">
+                <img src="{{ url_for('static', filename='login-image.png') }}" alt="sing up image" class="img-fluid rounded-circle mt-2">
             </div>
+            
             <div class="col-lg-6">
-              
                 <form action=""  method='POST'>
                 {{ form.hidden_tag() }}
-                <fieldset class='form-group'>
-                    <legend class='border-bottom mb-4 mt-4 text-muted text-center'> Log In </legend>
-                        <div class='form-group'>
-                            {{ form.email.label(class="form-control-label text-muted mb-2") }}
+                    <fieldset class='form-group'>
+                        <legend class='border-bottom mb-2 mt-2 text-muted text-center'> Log In </legend>
+                            <div class='mb-2 col-md-12'>
+                                {{ form.email.label(class="form-control-label text-muted mb-2") }}
 
-                            {% if form.email.errors %}
-                                {{ form.email(class="form-control form-control-lg is-invalid mb-2") }}
-                                    <div class="invalid-feedback">
-                                    {% for error in form.email.errors %}
+                                {% if form.email.errors %}
+                                    {{ form.email(class="form-control form-control-sm is-invalid mb-2") }}
+                                        <div class="invalid-feedback">
+                                        {% for error in form.email.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                        </div>
+                                {% else %}
+                                    {{ form.email(class="form-control form-control-sm mb-2") }}
+                                {% endif %}    
+                            </div>
+
+                        <div class='form-group'>
+                            {{ form.password.label(class="form-control-label text-muted mb-2") }}
+
+                            {% if form.password.errors %}
+                                {{ form.password(class="form-control form-control-sm is-invalid mb-2") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
-                                    </div>
+                                </div>
                             {% else %}
-                                {{ form.email(class="form-control form-control-lg mb-2") }}
+                                {{ form.password(class="form-control form-control-sm mb-2") }}
                             {% endif %}    
                         </div>
 
-                    <div class='form-group'>
-                        {{ form.password.label(class="form-control-label text-muted mb-2") }}
+                        <div class='form-check'>
+                            {{ form.remember(class='form-check-input')}}
+                            {{ form.remember.label(class='form-check-label text-muted')}}
+                        </div>
+                    </fieldset>
 
-                        {% if form.password.errors %}
-                            {{ form.password(class="form-control form-control-lg is-invalid mb-2") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.password.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.password(class="form-control form-control-lg mb-2") }}
-                        {% endif %}    
+                    <div class='form-group text-center'>
+                    {{ form.submit(class='btn btn-sm btn-brown')}} 
                     </div>
-
-                    <div class='form-check'>
-                        {{ form.remember(class='form-check-input')}}
-                        {{ form.remember.label(class='form-check-label text-muted')}}
-                    </div>
-                </fieldset>
-
-                <div class='form-group'>
-                {{ form.submit(class='btn btn-brown')}} 
-                </div>
+                    <div class='pt-1 text-center'>
                     <small class='text-muted ml-2'>
                         <a class="link-info" href="#" > Forgot Passowrd? </a>
                     </small>
-            </form>
-    
-            <div class='border-top pt-3'>
-                <small class='text-muted'>
-                    Don't have An Account? <a class="ml-2 link-info" href="{{ url_for('register') }}">Sign Up Now</a>
-                </small>
+                    </div>
+                </form>
+                <div class='border-top pt-1 text-center'>
+                    <small class='text-muted'>
+                        Don't have An Account? <a class="ml-2 link-info" href="{{ url_for('register') }}">Sign Up Now</a>
+                    </small>
+                </div>
             </div>
         </div>
     </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </section>
+</section>
+
         
         
 
