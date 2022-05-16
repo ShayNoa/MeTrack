@@ -6,11 +6,22 @@ from Tracker.config import bcrypt, create_app, db
 from Tracker.forms import ExpenseForm, LoginForm, RegistrationForm
 from Tracker.models import Category, Expense, User
 
+def add_categories():
+    categories = [
+    'Education', 'Fitness', 'Groceries', 'Dining out', 'Transportation',
+    'Utilities', 'Housing', 'Insurance', 'Kids', 'Medical', 
+    'Clothing', 'Pets', 'Vacation', 'Personal', 'Entertainment', 'Other'] 
+    for name in categories:
+        category = Category(name=name)
+        db.session.add(category)
+        db.session.commit()
+
+
 app = create_app()
 
 @app.errorhandler(NotFound)
 def handle_bad_request(e):
-    return 'not good!', 400
+    return render_template('404.html'), 400
 
 
 @app.route('/')
@@ -22,27 +33,23 @@ def home():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
     
-        user = User(username=form.username.data,
-                    first_name=form.first_name.data,
-                    last_name=form.last_name.data,
-                    email=form.email.data,
-                    password=hashed_password)    
-        db.session.add(user)
-        db.session.commit()
+    form = RegistrationForm()
+    
+    if form.validate_on_submit():
+        User.create(form)
         flash(f'Account created for {form.username.data}', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
+    
     form = LoginForm()
+    
     if form.validate_on_submit():
         user = User.by_email(form.email.data)
         if user and bcrypt.check_password_hash(user.password, form.password.data):
@@ -51,7 +58,7 @@ def login():
             if next_route:
                 return redirect(next_route)
             else:
-                return redirect(url_for('profile'))
+                return redirect(url_for('profile'))        
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', form=form)
@@ -76,20 +83,20 @@ def profile():
     amounts = [i[1] for i in expenses_months]
     
     form = ExpenseForm()
+    
     if request.method == 'POST' and form.validate_on_submit():
-        category_id = Category.get_id_by_name(form.category.data)
-        expense = Expense(
-            name=form.name.data,
-            cost=form.cost.data,
-            date=form.date.data,
-            user_id = current_user.id,
-            category_id=category_id
-        )
-        db.session.add(expense)
-        db.session.commit()
+        Expense.create(form, current_user.id)
         flash(f'{form.name.data} added', 'success')
         return redirect(url_for('profile'))
-    return render_template('profile.html', form=form, category_expenses=category_expenses, categories=categories, sums=sums, months=months, amounts=amounts, user_expenses=user_expenses)
+    return render_template(
+        'profile.html', 
+        form=form, 
+        category_expenses=category_expenses, 
+        categories=categories, sums=sums, 
+        months=months, 
+        amounts=amounts, 
+        user_expenses=user_expenses
+        )
 
 
 @app.route('/delete_expense/<int:expense_id>')
@@ -103,7 +110,7 @@ def delete_expense(expense_id):
 @app.route('/edit_expense/<int:expense_id>', methods=['GET', 'POST'])
 @login_required
 def edit_expense(expense_id): 
-    expense = Expense.query.get(expense_id)
+    expense = Expense.query.get_or_404(expense_id)
     form = ExpenseForm() 
     if request.method == 'POST' and form.validate_on_submit:
         category_id = Category.get_id_by_name(form.category.data)
@@ -115,6 +122,7 @@ def edit_expense(expense_id):
         flash(f'{form.name.data} changes saved', 'success')
         return redirect(url_for('profile'))
     
+
     if request.method == 'GET':
         edit_form = ExpenseForm(obj=expense)
         category = Category.query.get(expense.category_id)

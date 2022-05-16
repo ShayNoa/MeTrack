@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import (BooleanField, FloatField, PasswordField,
-                     StringField, SubmitField, DateField)
-from wtforms.validators import (DataRequired, Email, Length, ValidationError, equal_to, Optional, InputRequired)
+from wtforms import (BooleanField, DateField, FloatField, PasswordField,
+                     StringField, SubmitField)
+from wtforms.validators import (DataRequired, Email, InputRequired, Length,
+                                Optional, Regexp, ValidationError, equal_to)
 from wtforms_sqlalchemy.fields import QuerySelectField
 
 from Tracker.models import Category, User
@@ -9,10 +10,12 @@ from Tracker.models import Category, User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=25)])
-    first_name = StringField('First name', validators=[Optional(), Length(min=2, max=30)]) # make it optional
-    last_name = StringField('Last name', validators=[Optional(), Length(min=2, max=30)]) # make it optional
+    first_name = StringField('First name', validators=[Optional(), Length(min=2, max=30)]) 
+    last_name = StringField('Last name', validators=[Optional(), Length(min=2, max=30)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=30)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=30), Regexp(
+        regex='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$', message='Must contain at least on uppercase letter, one lowercase letter and one number'
+        )])
     confirm_password = PasswordField('Confirm password', validators=[DataRequired(), equal_to('password')])
     submit = SubmitField('Sign Up')
 

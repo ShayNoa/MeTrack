@@ -2,11 +2,11 @@
 {% block title %} <title>MeTrack</title> {% endblock title %}
 
 {% block content %}
-<div class="row text-dark"  style="background-color: rgb(230, 217, 205);">
+
+<div class="row"  style="background-color: #e9ddd2;">
     <div class="container p-4 text-center">
         <h1 class="fw-bold">MeTrack</h1>
-        <hr>
-        <p class="'lead"> With so many expense trackers out there, another one is defintely needed!</p>
+        <p class="'lead"> With so many expense trackers out there, another one is definitely needed!</p>
         {% if current_user.is_authenticated %}
         <a href='{{url_for("profile")}}' class="btn btn-brown">Go to profile</a>
         {% else %}
@@ -14,4 +14,5 @@
         {% endif %}
     </div>
 </div>
+    
 {% endblock content %}

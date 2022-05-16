@@ -1,23 +1,21 @@
 {% if  category_expenses %}
       <!--CHART--> 
 <div class='row mt-5'>
-<div class="col text-center">
-    <button id='CategoryBtn' class="btn btn-brown btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleCategories()">Expenses by Category</button>
-</div>
-<div class="col text-center">
-    <button id='MonthsBtn' class="btn btn-brown btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleGraphChart()">Expenses by Months</button>
-</div>
+    <div class="col text-center">
+        <button id='CategoryBtn' class="btn btn-brown btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleCategories()">Expenses by Category</button>
+    </div>
+    <div class="col text-center">
+        <button id='MonthsBtn' class="btn btn-brown btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleGraphChart()">Expenses by Months</button>
+    </div>
 </div>
       
   <div class="container justing-content-center mt-5">
-   
     <div class="row">
-    
-        <div class="col">
+        <div class="col-6">
             <div class="chart-container" id="pie-chart" style="position: relative; height:40vh; width:40vw; display:none;">
                 <canvas id="myChart"></canvas>
             </div>
-        
+            
                 <script>
                         function getColors(length){
                         let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", 
@@ -52,7 +50,7 @@
                     var sums =  {{ sums|safe }}; 
                     var ctx = document.getElementById('myChart');
                     var myChart = new Chart(ctx, {
-                        type: 'pie',
+                        type: 'doughnut',
                         data: {
                             labels: categories,
                             datasets: [{
@@ -65,7 +63,9 @@
                     });
                     
                 </script>
-            </div class='col-6'>
+            </div>
+
+            <div class='col-6'>
             <div class="chart-container" id="graph-chart" style="position: relative; height:40vh; width:40vw; display:none;">
                 <canvas id="myChart2"></canvas>
             </div>
@@ -103,8 +103,8 @@
                             }
                         }
                     });
-                    
                 </script>
+            </div>
         </div>
     </div>
 </div> 

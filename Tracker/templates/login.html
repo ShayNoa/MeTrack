@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %} <title>Login</title> {% endblock title %}
 
 {% block content %}
 <section class="Form my-2 mx-5">
@@ -12,9 +13,9 @@
                 <form action=""  method='POST'>
                 {{ form.hidden_tag() }}
                     <fieldset class='form-group'>
-                        <legend class='border-bottom mb-2 mt-2 text-muted text-center'> Log In </legend>
+                        <legend class='border-bottom mb-2 mt-2 text-center'> Log In </legend>
                             <div class='mb-2 col-md-12'>
-                                {{ form.email.label(class="form-control-label text-muted mb-2") }}
+                                {{ form.email.label(class="form-control-label mb-2") }}
 
                                 {% if form.email.errors %}
                                     {{ form.email(class="form-control form-control-sm is-invalid mb-2") }}
@@ -29,7 +30,7 @@
                             </div>
 
                         <div class='form-group'>
-                            {{ form.password.label(class="form-control-label text-muted mb-2") }}
+                            {{ form.password.label(class="form-control-label mb-2") }}
 
                             {% if form.password.errors %}
                                 {{ form.password(class="form-control form-control-sm is-invalid mb-2") }}
@@ -45,7 +46,7 @@
 
                         <div class='form-check'>
                             {{ form.remember(class='form-check-input')}}
-                            {{ form.remember.label(class='form-check-label text-muted')}}
+                            {{ form.remember.label(class='form-check-label')}}
                         </div>
                     </fieldset>
 

@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from sqlalchemy.sql.functions import func
 
 
-from Tracker.config import db, login_manager
+from Tracker.config import db, login_manager, bcrypt
 
 
 @login_manager.user_loader # read about it again.
@@ -23,6 +23,19 @@ class User(db.Model, UserMixin):
     def __repr__(self): 
         return f'{self.id}, {self.username}, {self.first_name}, {self.last_name}, {self.email}, {self.password}'
     
+    @classmethod
+    def create(cls, f):
+        hashed_password = bcrypt.generate_password_hash(f.password.data).decode('utf-8')
+        user = cls(
+            username=f.username.data,
+            first_name=f.first_name.data,
+            last_name=f.last_name.data,
+            email=f.email.data,
+            password=hashed_password
+            )    
+        db.session.add(user)
+        db.session.commit()
+
     @classmethod
     def by_email(cls, user_email):
         return cls.query.filter_by(email=user_email).first()
@@ -56,8 +69,19 @@ class Expense(db.Model):
         return db.session.query(
             func.strftime('%Y-%m', cls.date), func.sum(cls.cost)).join(User).filter(
                 User.id == user_id).group_by(func.strftime('%Y-%m', cls.date)).limit(6).all()
-    
-
+                
+    @classmethod
+    def create(cls, f, user_id):
+        category_id = Category.get_id_by_name(f.category.data)
+        expense = cls(
+            name=f.name.data,
+            cost=f.cost.data,
+            date=f.date.data,
+            user_id = user_id,
+            category_id=category_id
+        )
+        db.session.add(expense)
+        db.session.commit()
             
 
 class Category(db.Model):
@@ -75,12 +99,11 @@ class Category(db.Model):
         return category.id
         
 
-
 def add_categories():
     categories = [
     'Education', 'Fitness', 'Groceries', 'Dining out', 'Transportation',
-    'Utilities', 'Housing', 'Insurance', 'Kids', 'Self-Care', 'Health', 
-    'Clothing', 'Pets', 'Vacation'] # how to add: Other?
+    'Utilities', 'Housing', 'Insurance', 'Kids', 'Medical', 
+    'Clothing', 'Pets', 'Vacation', 'Personal', 'Entertainment', 'Other'] 
     for name in categories:
         category = Category(name=name)
         db.session.add(category)

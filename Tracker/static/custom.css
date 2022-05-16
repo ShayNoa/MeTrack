@@ -1,5 +1,6 @@
 body {
     background-color: rgb(244, 236, 229);
+    color: #3f3831;
 }
 
 .btn-brown {
@@ -8,7 +9,7 @@ body {
 }
 
 .btn-brown:hover{
-    background-color:rgb(199, 173, 148);
+    background-color:rgb(170, 145, 121);
     color: #FFF;}
 
 .link-info{
@@ -19,3 +20,6 @@ body {
     color: rgb(213, 107, 81)
 }
 
+.navbar-brand {
+    color: #3f3831
+}
