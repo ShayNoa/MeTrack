@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from sqlalchemy.sql.functions import func
 
-from Tracker.config import bcrypt, db, login_manager
+from Tracker import bcrypt, db, login_manager
 
 
 @login_manager.user_loader
@@ -126,4 +126,3 @@ def add_categories():
         category = Category(name=name)
         db.session.add(category)
     db.session.commit()
-

@@ -8,9 +8,9 @@
         <h1 class="fw-bold">MeTrack</h1>
         <p class="'lead"> With so many expense trackers out there, another one is definitely needed!</p>
         {% if current_user.is_authenticated %}
-        <a href='{{url_for("profile")}}' class="btn btn-brown">Go to profile</a>
+        <a href='{{url_for("expenses.profile")}}' class="btn btn-brown">Go to profile</a>
         {% else %}
-        <a href='{{url_for("register")}}' class="btn btn-brown">Register now!</a>
+        <a href='{{url_for("users.register")}}' class="btn btn-brown">Register now!</a>
         {% endif %}
     </div>
 </div>
