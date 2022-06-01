@@ -1,5 +1,4 @@
 {% if  category_expenses %}
-      <!--CHART--> 
 <div class='row mt-5'>
     <div class="col text-center">
         <button id='CategoryBtn' class="btn btn-brown btn-lg" tabindex="-1" role="button" aria-disabled="true" onclick="toggleCategories()">Expenses by Category</button>
@@ -15,7 +14,8 @@
             <div class="chart-container" id="pie-chart" style="position: relative; height:40vh; width:40vw; display:none;">
                 <canvas id="myChart"></canvas>
             </div>
-            
+                
+            <!-- does the JS script should be in a seperate js file? -->
                 <script>
                         function getColors(length){
                         let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", 
