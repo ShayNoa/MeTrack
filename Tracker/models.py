@@ -19,19 +19,25 @@ class User(db.Model, UserMixin):
 
     expenses = db.relationship("Expense", backref="by_user", lazy=True)
 
+    def __init__(self, username, first_name, last_name, email, password):
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.password = bcrypt.generate_password_hash(password).decode("utf-8")
+
     def __repr__(self):
         return f"""{self.id}, {self.username}, {self.first_name}, 
                 {self.last_name}, {self.email}, {self.password}"""
 
     @classmethod
     def create(cls, f):
-        hashed_password = bcrypt.generate_password_hash(f.password.data).decode("utf-8")
         user = cls(
             username=f.username.data,
             first_name=f.first_name.data,
             last_name=f.last_name.data,
             email=f.email.data,
-            password=hashed_password,
+            password=f.password.data
         )
         db.session.add(user)
         db.session.commit()

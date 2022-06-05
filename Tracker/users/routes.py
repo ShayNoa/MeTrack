@@ -30,7 +30,6 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
-
     form = LoginForm()
     if form.validate_on_submit():
         user = User.by_email(form.email.data)
