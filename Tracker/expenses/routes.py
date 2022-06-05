@@ -37,21 +37,12 @@ def profile():
     )
 
 
-@expenses.route("/delete_expense/<int:expense_id>")
-def delete_expense(expense_id):
-    expense = Expense.query.get_or_404(expense_id)
-    if expense.user_id == current_user.id:
-        db.session.delete(expense)
-        db.session.commit()
-    return redirect(url_for("expenses.profile"))
-
-
 @expenses.route("/edit_expense/<int:expense_id>", methods=["GET", "POST"])
 @login_required
 def edit_expense(expense_id):
     expense = Expense.query.get_or_404(expense_id)
     if expense.user_id != current_user.id:
-        return redirect(url_for("expenses.profile"))
+        return redirect(url_for("expenses.profile")) # not tested
 
     form = ExpenseForm()
     if request.method == "POST" and form.validate_on_submit:
@@ -69,3 +60,13 @@ def edit_expense(expense_id):
         category = Category.query.get(expense.category_id)
         edit_form.category.data = category
         return render_template("edit.html", expense=expense, edit_form=edit_form)
+
+
+@expenses.route("/delete_expense/<int:expense_id>") # WHY THIS IS GET>?
+def delete_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
+    if expense.user_id == current_user.id:
+        db.session.delete(expense)
+        db.session.commit()
+        flash(f"{expense.name} has been deleted", "success")
+    return redirect(url_for("expenses.profile"))

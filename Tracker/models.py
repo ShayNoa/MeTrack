@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
         self.email = email
         self.password = bcrypt.generate_password_hash(password).decode("utf-8")
 
-    def __repr__(self):
+    def __repr__(self): # not tested
         return f"""{self.id}, {self.username}, {self.first_name}, 
                 {self.last_name}, {self.email}, {self.password}"""
 
@@ -89,7 +89,7 @@ class Expense(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
 
-    def __repr__(self):
+    def __repr__(self): # not tested
         return f"{self.id}, {self.name}, {self.cost}, {self.date}"
 
     @classmethod
@@ -121,7 +121,7 @@ class Category(db.Model):
         return category.id
 
 
-# used to add categoris to db
+# used in order to add categoris to db
 def add_categories():
     categories = [
         "Education", "Fitness", "Groceries", "Dining out", "Transportation",

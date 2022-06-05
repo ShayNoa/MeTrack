@@ -16,7 +16,7 @@ users = Blueprint('users', __name__)
 @users.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("main.home"))
+        return redirect(url_for("expenses.profile"))
 
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -29,7 +29,7 @@ def register():
 @users.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("main.home"))
+        return redirect(url_for("expenses.profile"))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.by_email(form.email.data)
