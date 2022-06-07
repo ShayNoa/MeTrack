@@ -109,7 +109,7 @@ class Expense(db.Model):
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
-
+    
     expenses = db.relationship("Expense", backref="expense", lazy=True)
 
     def __repr__(self):

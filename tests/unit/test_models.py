@@ -1,5 +1,6 @@
 from Tracker.models import User, Expense, Category
 import datetime
+from Tracker import db
 
 
 def test_new_expense(init_database):
@@ -10,6 +11,8 @@ def test_new_expense(init_database):
         category_id=1,
         user_id=1
     )
+    db.session.add(expense)
+    db.session.commit()
     assert expense.name == 'test expense'
     assert expense.cost == 22.2 
     assert expense.date == datetime.date(2022, 6, 2)

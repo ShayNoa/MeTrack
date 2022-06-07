@@ -2,6 +2,7 @@
 .vscode
 
 # Environments
+.flaskenv
 .env
 .venv
 env/
@@ -15,5 +16,8 @@ venv.bak/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Test related
+.coverage
 
 
