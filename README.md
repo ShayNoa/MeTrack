@@ -34,13 +34,14 @@ expenses by months and by categories, to help them understand where their money 
  `pip install -r ruqirements.txt`
 
  5. Create the db:
- `python 
- from Tracker import db  
- db.create_all()  
+ `python <br />
+ from Tracker import db  <br />
+ db.create_all()  <br />
  exit()`
 
 6. Run flask app using `flask run`
 
+The app should now be available on localhost, port 5000.
 
 
 
