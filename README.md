@@ -5,8 +5,8 @@ An expense tracker for personal use.
 ## What is MeTrack?
 MeTrack is built with the flask framework. It uses Flask-Login for user management, allowing useres to sign
 up and have a personal profile where they can track their expenses. It is a full CRUD app, and usere
-can add, edit end delete their expenses. The profile also display users charts of their 
-expenses by months and by categories, to help them understand where their money goes.
+can add, edit and delete their expenses. The profile also display users charts of their 
+expenses by months and by categories to help them understand where their money goes.
 
 ## Technologies
 * Front-end: Bootstrap, Charts.js and DataTables.
@@ -32,7 +32,7 @@ git clone https://github.com/ShayNoa/MeTrack.git
 
  3. Activate your environment:
  ```
- source evn/bin/activate
+ source env/bin/activate
  ```
  4. Install the dependencies:
  ```
@@ -50,7 +50,7 @@ exit()
 flask run
 ```
 
-The app now shoule be available on localhost, port 5000.
+The app now should be available on localhost, port 5000.
 
 
 
