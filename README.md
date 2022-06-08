@@ -34,9 +34,9 @@ expenses by months and by categories, to help them understand where their money 
  `pip install -r ruqirements.txt`
 
  5. Create the db:
- `python <br />
- from Tracker import db  <br />
- db.create_all()  <br />
+ `python   
+ from Tracker import db  
+ db.create_all()  
  exit()`
 
 6. Run flask app using `flask run`
