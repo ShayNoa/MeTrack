@@ -54,10 +54,7 @@ The app now should be available on localhost, port 5000.
 
 
 
- 
 
-
-The app should now be available on localhost, port 5000.
 
 
 
