@@ -1,6 +1,5 @@
 
 # MeTrack
-
 An expense tracker for personal use. 
 
 ## What is MeTrack?
@@ -22,24 +21,41 @@ expenses by months and by categories, to help them understand where their money 
 
  ## How can you run it locally?
  1. Clone the repo  
-`git clone https://github.com/ShayNoa/MeTrack.git`
+```
+git clone https://github.com/ShayNoa/MeTrack.git
+```
 
 2. Create your virtual enviornment 
- `python -m venv env`
+ ```
+ python -m venv env
+ ```
 
  3. Activate your environment:
- `source evn/bin/activate`
-
+ ```
+ source evn/bin/activate
+ ```
  4. Install the dependencies:
- `pip install -r ruqirements.txt`
-
+ ```
+ pip install -r ruqirements.txt
+ ```
  5. Create the db:
- `python   
- from Tracker import db  
- db.create_all()  
- exit()`
+ ```
+python 
+from Tracker import db  
+db.create_all()  
+exit()
+ ```
+6. Run flask app typing
+```
+flask run
+```
 
-6. Run flask app using `flask run`
+The app now shoule be available on localhost, port 5000.
+
+
+
+ 
+
 
 The app should now be available on localhost, port 5000.
 
