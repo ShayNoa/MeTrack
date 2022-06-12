@@ -36,21 +36,16 @@ git clone https://github.com/ShayNoa/MeTrack.git
  ```
  4. Install the dependencies:
  ```
- pip install -r ruqirements.txt
+ pip install -r requirements.txt
  ```
- 5. Create the db:
- ```
-python 
-from Tracker import db  
-db.create_all()  
-exit()
+
  ```
 6. Run flask app typing
 ```
 flask run
 ```
 
-The app now should be available on localhost, port 5000.
+The app now will be available on localhost, port 5000.
 
 
 
