@@ -39,13 +39,12 @@ git clone https://github.com/ShayNoa/MeTrack.git
  pip install -r requirements.txt
  ```
 
- ```
 6. Run flask app typing
 ```
 flask run
 ```
 
-The app now will be available on localhost, port 5000.
+The app will be available on localhost, port 5000.
 
 
 
